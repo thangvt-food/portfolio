@@ -3,20 +3,14 @@
 import { useLang } from "@/contexts/LanguageContext";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { Menu, X } from "lucide-react";
 
 export default function Navbar() {
   const { t, lang, toggleLang } = useLang();
   const pathname = usePathname();
-  const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   const links = [
     { href: "/", label: t.nav.home },
@@ -26,101 +20,88 @@ export default function Navbar() {
     { href: "/contact", label: t.nav.contact },
   ];
 
+  const isActive = (href: string) =>
+    href === "/" ? pathname === "/" : pathname.startsWith(href);
+
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-bg/80 backdrop-blur-xl border-b border-border"
-          : "bg-transparent"
-      }`}
-    >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="flex items-center justify-between h-16">
-          <Link href="/" className="flex items-center gap-2">
-            <img src="/logo.png" alt="HT" className="h-7 w-auto" />
-          </Link>
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-border bg-bg/92 backdrop-blur-md">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
+        <Link href="/" className="flex items-baseline gap-2.5">
+          <span className="inline-block h-2.5 w-2.5 translate-y-[-1px] bg-lotus" aria-hidden />
+          <span className="font-display text-[19px] font-bold leading-none tracking-tight">
+            Hồ Quốc Thắng
+          </span>
+          <span className="hidden font-mono text-[10px] uppercase tracking-[0.18em] text-text-secondary sm:inline">
+            Portfolio
+          </span>
+        </Link>
 
-          <div className="hidden md:flex items-center gap-8">
-            {links.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`relative text-sm transition-colors ${
-                  pathname === link.href
-                    ? "text-text"
-                    : "text-text-secondary hover:text-text"
-                }`}
-              >
-                {link.label}
-                {pathname === link.href && (
-                  <motion.div
-                    layoutId="nav-indicator"
-                    className="absolute -bottom-1 left-0 right-0 h-px bg-primary"
-                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                  />
-                )}
-              </Link>
-            ))}
-
-            <button
-              onClick={toggleLang}
-              className="px-2.5 py-1 text-xs font-medium rounded-md bg-surface-elevated text-text-secondary hover:text-text transition-colors"
+        <nav className="hidden items-center gap-7 md:flex" aria-label="Main">
+          {links.map((link, i) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={`font-mono text-[11.5px] uppercase tracking-[0.14em] transition-colors ${
+                isActive(link.href)
+                  ? "text-primary underline decoration-lotus decoration-2 underline-offset-8"
+                  : "text-text-secondary hover:text-ink"
+              }`}
             >
-              {lang === "vi" ? "EN" : "VI"}
-            </button>
-          </div>
-
+              <span className="mr-1 text-[9px] text-lotus">0{i + 1}</span>
+              {link.label}
+            </Link>
+          ))}
           <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden p-2 text-text-secondary hover:text-text transition-colors"
-            aria-label="Menu"
+            onClick={toggleLang}
+            className="border border-border bg-surface px-3 py-1.5 font-mono text-[11px] font-semibold uppercase tracking-widest text-text-secondary transition-colors hover:border-primary hover:text-primary"
+            aria-label="Switch language"
           >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              {menuOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 12h16M4 18h16" />
-              )}
-            </svg>
+            {lang === "vi" ? "VI / EN" : "EN / VI"}
           </button>
-        </div>
+        </nav>
+
+        <button
+          onClick={() => setMenuOpen(!menuOpen)}
+          className="border border-border bg-surface p-2 text-ink md:hidden"
+          aria-label="Menu"
+        >
+          {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </button>
       </div>
 
       <AnimatePresence>
         {menuOpen && (
-          <motion.div
+          <motion.nav
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-bg/95 backdrop-blur-xl border-b border-border"
+            className="border-t border-border bg-bg md:hidden"
+            aria-label="Mobile"
           >
-            <div className="px-4 py-4 space-y-1">
-              {links.map((link) => (
+            <div className="px-4 py-3">
+              {links.map((link, i) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   onClick={() => setMenuOpen(false)}
-                  className={`block px-3 py-2 text-sm rounded-lg transition-colors ${
-                    pathname === link.href
-                      ? "text-text bg-surface"
-                      : "text-text-secondary hover:text-text hover:bg-surface/50"
+                  className={`flex items-baseline gap-3 border-b border-border/60 py-3 font-mono text-xs uppercase tracking-[0.14em] last:border-0 ${
+                    isActive(link.href) ? "text-primary" : "text-text-secondary"
                   }`}
                 >
+                  <span className="text-[9px] text-lotus">0{i + 1}</span>
                   {link.label}
                 </Link>
               ))}
-              <div className="pt-2 px-3">
-                <button
-                  onClick={toggleLang}
-                  className="px-2.5 py-1 text-xs font-medium rounded-md bg-surface-elevated text-text-secondary hover:text-text transition-colors"
-                >
-                  {lang === "vi" ? "EN" : "VI"}
-                </button>
-              </div>
+              <button
+                onClick={toggleLang}
+                className="mb-2 mt-3 border border-border bg-surface px-3 py-1.5 font-mono text-[11px] font-semibold uppercase tracking-widest text-text-secondary"
+              >
+                {lang === "vi" ? "VI / EN" : "EN / VI"}
+              </button>
             </div>
-          </motion.div>
+          </motion.nav>
         )}
       </AnimatePresence>
-    </nav>
+    </header>
   );
 }

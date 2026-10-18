@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, useCallback, ReactNode } from "react";
+import { createContext, useContext, useState, useCallback, useEffect, ReactNode } from "react";
 import vi from "@/i18n/vi.json";
 import en from "@/i18n/en.json";
 
@@ -15,11 +15,20 @@ interface LangContextType {
 }
 
 const translations: Record<Lang, Translations> = { vi, en };
-
 const LangContext = createContext<LangContextType | undefined>(undefined);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>("vi");
+
+  useEffect(() => {
+    const saved = window.localStorage.getItem("portfolio-lang");
+    if (saved === "vi" || saved === "en") setLangState(saved);
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.lang = lang;
+    window.localStorage.setItem("portfolio-lang", lang);
+  }, [lang]);
 
   const t = translations[lang];
 

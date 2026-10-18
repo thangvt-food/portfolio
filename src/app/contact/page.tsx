@@ -1,7 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
 import { useLang } from "@/contexts/LanguageContext";
+import PageHeader from "@/components/PageHeader";
 
 interface Social {
   name: string;
@@ -67,67 +69,63 @@ const socials: Social[] = [
 ];
 
 export default function Contact() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
+  const vi = lang === "vi";
 
   return (
-    <div className="min-h-screen pt-28 pb-20">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-12"
+    <div className="paper-grain mx-auto max-w-6xl px-4 pb-24 pt-32 sm:px-6">
+      <PageHeader
+        index="04"
+        eyebrow={vi ? "Thư từ" : "Correspondence"}
+        title={t.contact.title}
+        subtitle={t.contact.subtitle}
+      />
+
+      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
+        <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-text-secondary">{t.contact.email}</p>
+        <a
+          href="https://mail.google.com/mail/?view=cm&fs=1&to=aczaao12@gmail.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group mt-3 inline-flex flex-wrap items-center gap-3 font-display text-4xl font-semibold tracking-tight underline decoration-border decoration-2 underline-offset-10 transition-colors hover:text-primary hover:decoration-lotus sm:text-6xl"
         >
-          <h1 className="text-3xl sm:text-4xl font-bold mb-2">{t.contact.title}</h1>
-          <p className="text-text-secondary">{t.contact.subtitle}</p>
-        </motion.div>
+          aczaao12@gmail.com
+          <ArrowUpRight className="h-9 w-9 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+        </a>
+        <p className="mt-6 max-w-xl leading-[1.75] text-text-secondary">
+          {vi
+            ? "Cách nhanh nhất để gặp tôi. Cứ viết thẳng vào việc — một ý tưởng, một lời mời cộng tác, hay chỉ một câu hỏi về ngành thực phẩm."
+            : "The fastest way to reach me. Write directly — an idea, a collaboration invite, or just a question about food technology."}
+        </p>
+      </motion.div>
 
-        <div className="max-w-xl">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="mb-12"
+      <div className="mt-16 border-t border-border">
+        {socials.map((social, i) => (
+          <motion.a
+            key={social.name}
+            href={social.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.04 }}
+            className="group grid grid-cols-[40px_1fr_auto] items-center gap-4 border-b border-border py-5 transition-colors hover:bg-surface"
           >
-            <a
-              href="https://mail.google.com/mail/?view=cm&fs=1&to=aczaao12@gmail.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 px-5 py-3 rounded-xl bg-surface border border-border hover:border-primary/30 transition-colors group"
-            >
-              <svg className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-              </svg>
-              <span className="text-text-secondary group-hover:text-text transition-colors">
-                aczaao12@gmail.com
+            <span className="flex h-10 w-10 items-center justify-center border border-border bg-surface text-primary">
+              {social.icon}
+            </span>
+            <span className="font-display text-xl font-semibold tracking-tight group-hover:text-primary">
+              {social.name}
+            </span>
+            <span className="flex items-center gap-3 pr-1">
+              <span className="hidden font-mono text-[10.5px] uppercase tracking-[0.14em] text-text-secondary sm:inline">
+                {String(i + 1).padStart(2, "0")}
               </span>
-            </a>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-          >
-            <div className="flex gap-3">
-              {socials.map((social, i) => (
-                <motion.a
-                  key={social.name}
-                  href={social.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.3 + i * 0.05 }}
-                  whileHover={{ scale: 1.1, y: -2 }}
-                  className="w-11 h-11 rounded-xl bg-surface border border-border flex items-center justify-center text-text-secondary hover:text-primary hover:border-primary/30 transition-colors"
-                  title={social.name}
-                >
-                  {social.icon}
-                </motion.a>
-              ))}
-            </div>
-          </motion.div>
-        </div>
+              <ArrowUpRight className="h-5 w-5 text-text-secondary transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-primary" />
+            </span>
+          </motion.a>
+        ))}
       </div>
     </div>
   );

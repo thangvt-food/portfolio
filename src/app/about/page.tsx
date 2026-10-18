@@ -3,120 +3,85 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { useLang } from "@/contexts/LanguageContext";
-import { CalendarDays, MapPin, GraduationCap, BookOpen, Briefcase, BarChart3, Folder, Zap, Shield } from "lucide-react";
-
-const infoItems = (t: any) => [
-  { icon: <CalendarDays className="w-4 h-4" />, text: t.about.birth },
-  { icon: <MapPin className="w-4 h-4" />, text: t.about.from },
-  { icon: <GraduationCap className="w-4 h-4" />, text: t.about.major },
-  { icon: <BookOpen className="w-4 h-4" />, text: t.about.specialty },
-  { icon: <Briefcase className="w-4 h-4" />, text: t.about.position },
-  { icon: <BarChart3 className="w-4 h-4" />, text: t.about.gpa },
-];
-
-const stats = [
-  { value: "5+", label: "Dự án", icon: <Folder className="w-4 h-4" /> },
-  { value: "12+", label: "Kỹ năng", icon: <Zap className="w-4 h-4" /> },
-];
+import PageHeader from "@/components/PageHeader";
 
 export default function About() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
+  const vi = lang === "vi";
+
+  const info: [string, string][] = vi
+    ? [
+        ["Ngày sinh", t.about.birth],
+        ["Quê quán", t.about.from],
+        ["Ngành học", t.about.major],
+        ["Trường", t.about.school],
+        ["Khoa", t.about.faculty],
+        ["Chuyên ngành", t.about.specialty],
+        ["Chức vụ", t.about.position],
+        ["Điểm số", t.about.gpa],
+      ]
+    : [
+        ["Born", t.about.birth],
+        ["From", t.about.from],
+        ["Major", t.about.major],
+        ["University", t.about.school],
+        ["Faculty", t.about.faculty],
+        ["Specialty", t.about.specialty],
+        ["Role", t.about.position],
+        ["Grades", t.about.gpa],
+      ];
 
   return (
-    <div className="min-h-screen pt-28 pb-20">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
+    <div className="paper-grain mx-auto max-w-6xl px-4 pb-24 pt-32 sm:px-6">
+      <PageHeader index="01" eyebrow={vi ? "Hồ sơ" : "Profile"} title={t.about.title} subtitle={t.about.status} />
+
+      <div className="grid items-start gap-12 lg:grid-cols-12">
+        <motion.figure
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-16"
+          transition={{ delay: 0.1 }}
+          className="lg:col-span-5"
         >
-          <h1 className="text-3xl sm:text-4xl font-bold mb-2">{t.about.title}</h1>
-          <p className="text-text-secondary">{t.about.status}</p>
+          <div className="relative">
+            <div className="absolute -right-3 -top-3 h-full w-full border border-primary/30" aria-hidden />
+            <Image src="/images/avatar.jpeg" alt={t.hero.name} width={520} height={650} className="relative aspect-[4/5] w-full object-cover" priority />
+          </div>
+          <figcaption className="mt-4 font-mono text-[11px] uppercase tracking-[0.16em] text-text-secondary">
+            {t.hero.name} — {t.about.from}
+          </figcaption>
+        </motion.figure>
+
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="lg:col-span-7"
+        >
+          <p className="font-display text-[22px] font-medium leading-[1.55] tracking-tight text-text/90">
+            {t.about.bio}
+          </p>
+
+          <dl className="mt-10 border-t border-border">
+            {info.map(([label, value]) => (
+              <div key={label} className="grid grid-cols-[130px_1fr] gap-4 border-b border-border py-3.5 sm:grid-cols-[170px_1fr]">
+                <dt className="pt-0.5 font-mono text-[11px] uppercase tracking-[0.16em] text-text-secondary">{label}</dt>
+                <dd className="text-[15px] font-medium leading-relaxed">{value}</dd>
+              </div>
+            ))}
+          </dl>
+
+          <h2 className="mb-2 mt-14 font-display text-3xl font-semibold tracking-tight">{t.about.workStyle}</h2>
+          <div>
+            {t.about.workValues.map((value: string, i: number) => (
+              <div key={i} className="grid grid-cols-[48px_1fr] gap-4 border-b border-border py-6 first:border-t">
+                <span className="font-display text-2xl font-semibold italic text-lotus">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <p className="text-[15.5px] leading-[1.75] text-text/85">{value}</p>
+              </div>
+            ))}
+          </div>
         </motion.div>
-
-        <div className="grid md:grid-cols-[280px_1fr] gap-12 items-start">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-          >
-            <div className="rounded-2xl overflow-hidden border border-border bg-surface">
-              <Image
-                src="/images/avatar.jpeg"
-                alt="Hồ Quốc Thắng"
-                width={400}
-                height={400}
-                className="w-full aspect-square object-cover"
-                priority
-              />
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="space-y-8"
-          >
-            <p className="text-text-secondary leading-relaxed">
-              {t.about.bio}
-            </p>
-
-            <div className="space-y-3">
-              {infoItems(t).map((item, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.3 + i * 0.05 }}
-                  className="flex items-center gap-3 text-sm"
-                >
-                  <span className="text-primary">{item.icon}</span>
-                  <span className="text-text-secondary">{item.text}</span>
-                </motion.div>
-              ))}
-            </div>
-
-            <div className="flex gap-6 pt-2">
-              {stats.map((stat, i) => (
-                <motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 + i * 0.1 }}
-                  className="flex items-center gap-3 px-4 py-3 rounded-xl bg-surface border border-border"
-                >
-                  <span className="text-primary">{stat.icon}</span>
-                  <div>
-                    <div className="text-lg font-bold">{stat.value}</div>
-                    <div className="text-xs text-text-secondary">{stat.label}</div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-
-            <div className="pt-4">
-              <h2 className="text-lg font-semibold mb-3 flex items-center gap-2">
-                <Shield className="w-4 h-4 text-primary" />
-                {t.about.workStyle}
-              </h2>
-              <ul className="space-y-2">
-                {t.about.workValues.map((value: string, i: number) => (
-                  <motion.li
-                    key={i}
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.6 + i * 0.08 }}
-                    className="text-sm text-text-secondary leading-relaxed flex gap-2"
-                  >
-                    <span className="text-primary mt-0.5 flex-shrink-0">—</span>
-                    {value}
-                  </motion.li>
-                ))}
-              </ul>
-            </div>
-          </motion.div>
-        </div>
       </div>
     </div>
   );

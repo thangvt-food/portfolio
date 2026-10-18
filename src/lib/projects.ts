@@ -14,7 +14,7 @@ export const projects: Project[] = [
     id: "union",
     titleKey: "projects.items.union.title",
     descKey: "projects.items.union.desc",
-    tech: ["Next.js", "MySQL", "AI Agent"],
+    tech: ["Next.js", "MySQL", "AI Cowork"],
     image: "/projects/DH23VT.png",
   },
   {
