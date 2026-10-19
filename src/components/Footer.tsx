@@ -15,12 +15,12 @@ export default function Footer() {
               {lang === "vi" ? "Liên hệ" : "Contact"}
             </p>
             <a
-              href="https://mail.google.com/mail/?view=cm&fs=1&to=aczaao12@gmail.com"
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=quocthangk23vt.food@gmail.com"
               target="_blank"
               rel="noopener noreferrer"
               className="group mt-3 inline-flex items-center gap-2 font-display text-3xl font-semibold tracking-tight underline decoration-white/30 underline-offset-8 transition-colors hover:decoration-lotus sm:text-4xl"
             >
-              aczaao12@gmail.com
+              quocthangk23vt.food@gmail.com
               <ArrowUpRight className="h-6 w-6 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
             </a>
             <p className="mt-4 max-w-md text-[15px] leading-relaxed text-white/60">

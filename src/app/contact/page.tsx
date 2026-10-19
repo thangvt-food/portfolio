@@ -84,12 +84,12 @@ export default function Contact() {
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
         <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-text-secondary">{t.contact.email}</p>
         <a
-          href="https://mail.google.com/mail/?view=cm&fs=1&to=aczaao12@gmail.com"
+          href="https://mail.google.com/mail/?view=cm&fs=1&to=quocthangk23vt.food@gmail.com"
           target="_blank"
           rel="noopener noreferrer"
           className="group mt-3 inline-flex flex-wrap items-center gap-3 font-display text-4xl font-semibold tracking-tight underline decoration-border decoration-2 underline-offset-10 transition-colors hover:text-primary hover:decoration-lotus sm:text-6xl"
         >
-          aczaao12@gmail.com
+          quocthangk23vt.food@gmail.com
           <ArrowUpRight className="h-9 w-9 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
         </a>
         <p className="mt-6 max-w-xl leading-[1.75] text-text-secondary">
