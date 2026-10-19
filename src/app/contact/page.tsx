@@ -89,9 +89,20 @@ export default function Contact() {
           rel="noopener noreferrer"
           className="group mt-3 inline-flex flex-wrap items-center gap-3 font-display text-4xl font-semibold tracking-tight underline decoration-border decoration-2 underline-offset-10 transition-colors hover:text-primary hover:decoration-lotus sm:text-6xl"
         >
-          quocthangk23vt.food@gmail.com
-          <ArrowUpRight className="h-9 w-9 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+          {vi ? "Gửi email cho tôi" : "Send me an email"}
+          <ArrowUpRight className="h-9 w-9 shrink-0 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
         </a>
+        <p className="mt-5 font-mono text-sm tracking-[0.03em] text-text-secondary sm:text-[15px]">
+          <span className="mr-3 text-[11px] uppercase tracking-[0.2em] text-text-secondary/70">Email</span>
+          <a
+            href="https://mail.google.com/mail/?view=cm&fs=1&to=quocthangk23vt.food@gmail.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="break-all underline decoration-border underline-offset-4 transition-colors hover:text-primary hover:decoration-lotus"
+          >
+            quocthangk23vt.food@gmail.com
+          </a>
+        </p>
         <p className="mt-6 max-w-xl leading-[1.75] text-text-secondary">
           {vi
             ? "Cách nhanh nhất để gặp tôi. Cứ viết thẳng vào việc — một ý tưởng, một lời mời cộng tác, hay chỉ một câu hỏi về ngành thực phẩm."
